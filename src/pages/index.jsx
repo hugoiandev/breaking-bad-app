@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import Head from 'next/head'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Container from '../components/Container'
@@ -40,6 +41,10 @@ const Characters = ({ characters }) => {
 
   return (
     <>
+      <Head>
+        <title>Home</title>
+        <link rel="shurtcut icon" href="/assets/favicon/favicon.ico" />
+      </Head>
       <Header />
       <Container>
         <div className={styles.characterContainer}>

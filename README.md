@@ -29,7 +29,7 @@ Esse projeto em NextJs foi feito para um teste de processo seletivo, no qual ped
 
 ## Hospedagem
 
-Esse projeto encontra-se hospedado na plataforma Vercel 
+Esse projeto encontra-se hospedado na plataforma Vercel
 
 
 

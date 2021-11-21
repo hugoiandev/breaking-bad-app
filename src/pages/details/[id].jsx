@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Container from '../../components/Container'
@@ -40,6 +41,10 @@ const Details = ({ character, ep }) => {
 
   return (
     <>
+      <Head>
+        <title>Details</title>
+        <link rel="shurtcut icon" href="/assets/favicon/favicon.ico" />
+      </Head>
       <Container>
         {character && character.map((item) => {
           return (
