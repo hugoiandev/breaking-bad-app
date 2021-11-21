@@ -23,5 +23,14 @@ Esse projeto em NextJs foi feito para um teste de processo seletivo, no qual ped
 
 ## Como rodar na sua maquina
 
+1. `git clone`
+2. `npm install`
+3. `npm run dev`
+
+## Hospedagem
+
+Esse projeto encontra-se hospedado na plataforma Vercel 
+
+
 
 
