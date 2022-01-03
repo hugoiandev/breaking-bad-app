@@ -8,11 +8,34 @@ import styles from './Details.module.scss'
 import iconBackUrl from '../../../public/assets/icons/arrow.svg'
 import iconBrBd from '../../../public/assets/icons/brbd.svg'
 import { gsap, Power4 } from 'gsap'
+import { DivElement } from '../../utils/types'
 
-const Details = ({ character, ep }) => {
+interface CharacterTypes {
+  birthday: string
+  category: string
+  nickname: string
+  status: string
+  occupation: string[]
+  char_id: number
+  img: string
+  name: string
+}
+
+interface EpisodeosTypes {
+  title: string
+  episode_id: number
+}
+
+interface CharacterProps {
+  character: CharacterTypes[]
+  ep: EpisodeosTypes[]
+}
+
+const Details = ({ character, ep }: CharacterProps): JSX.Element => {
   const { back } = useRouter()
-  const overload = React.useRef()
-  const overloadIcon = React.useRef()
+  const overload = React.useRef<DivElement>(null)
+  const overloadIcon = React.useRef<DivElement>(null)
+
 
   // Gsap animation
   React.useEffect(() => {
@@ -46,7 +69,7 @@ const Details = ({ character, ep }) => {
         <link rel="shurtcut icon" href="/assets/favicon/favicon.ico" />
       </Head>
       <Container>
-        {character && character.map((item) => {
+        {character && character.map((item): JSX.Element => {
           return (
             <div key={item.char_id}>
               <div className={styles.containerImg}>

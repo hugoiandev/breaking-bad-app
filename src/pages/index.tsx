@@ -9,10 +9,23 @@ import styles from '../styles/Characters.module.scss'
 import { GET_CHARACTERS } from "../utils/endpoints"
 import iconBrBd from '../../public/assets/icons/brbd.svg'
 import { gsap, Power4 } from 'gsap'
+import { DivElement } from '../utils/types'
 
-const Characters = ({ characters }) => {
-  const overload = React.useRef()
-  const overloadIcon = React.useRef()
+interface CharacterTypes {
+  char_id: string
+  name: string
+  img: string
+  birthday: string
+  status: string
+}
+
+interface CharacterProps {
+  characters: CharacterTypes[]
+}
+
+const Characters = ({ characters }: CharacterProps): JSX.Element => {
+  const overload = React.useRef<DivElement>(null)
+  const overloadIcon = React.useRef<DivElement>(null)
 
   // Gsap animation
   React.useEffect(() => {
@@ -88,7 +101,7 @@ const Characters = ({ characters }) => {
 }
 
 // Server side function
-export async function getServerSideProps() {
+export async function getStaticProps() {
   // Get characters
   const { url } = GET_CHARACTERS()
   const response = await fetch(url)
