@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Container from '../../components/Container'
-import { GET_CHARACTER, GET_EPISODES } from '../../utils/endpoints'
+import { GET_CHARACTER, GET_CHARACTERS, GET_EPISODES } from '../../utils/endpoints'
 import styles from './Details.module.scss'
 import iconBackUrl from '../../../public/assets/icons/arrow.svg'
 import iconBrBd from '../../../public/assets/icons/brbd.svg'
@@ -16,7 +16,7 @@ interface CharacterTypes {
   nickname: string
   status: string
   occupation: string[]
-  char_id: number
+  char_id: string | number
   img: string
   name: string
 }
@@ -27,11 +27,11 @@ interface EpisodeosTypes {
 }
 
 interface CharacterProps {
-  character: CharacterTypes[]
+  char: CharacterTypes[]
   ep: EpisodeosTypes[]
 }
 
-const Details = ({ character, ep }: CharacterProps): JSX.Element => {
+const Details = ({ char, ep }: CharacterProps): JSX.Element => {
   const { back } = useRouter()
   const overload = React.useRef<DivElement>(null)
   const overloadIcon = React.useRef<DivElement>(null)
@@ -69,7 +69,7 @@ const Details = ({ character, ep }: CharacterProps): JSX.Element => {
         <link rel="shurtcut icon" href="/assets/favicon/favicon.ico" />
       </Head>
       <Container>
-        {character && character.map((item): JSX.Element => {
+        {char && char.map((item): JSX.Element => {
           return (
             <div key={item.char_id}>
               <div className={styles.containerImg}>
@@ -138,27 +138,42 @@ const Details = ({ character, ep }: CharacterProps): JSX.Element => {
 }
 
 // Server side function
-export async function getServerSideProps({ params }) {
+export async function getStaticPaths() {
   // Get character
-  const char = GET_CHARACTER(params.id)
-  const responseChar = await fetch(char.url)
-  const jsonChar = await responseChar.json()
-  const name = jsonChar.map((item) => item.name)
+  const { url } = GET_CHARACTERS()
+  const res = await fetch(url)
+  const chars = await res.json()
+
+  const paths = chars.map((chars: CharacterTypes) => {
+    return { params: { id: chars.char_id.toString() } }
+  })
+
+  return { paths, fallback: false }
+  
+}
+
+export async function getStaticProps({ params }) {
+  const { url } = GET_CHARACTER(params.id)
+
+  const res = await fetch(url)
+  const char = await res.json()
+  const name = char.map((item) => item.name)
 
   // Get episodes
   const episodeos = GET_EPISODES()
-  const responseEp = await fetch(episodeos.url)
-  const jsonEp = await responseEp.json()
+  const resEp = await fetch(episodeos.url)
+  const jsonEp = await resEp.json()
 
   const result = jsonEp.filter((item) => {
     return item.characters.find((item) => item === name[0])
   })
 
   return {
-    props: {
-      character: jsonChar,
-      ep: result
-    }
+    props: { 
+      char,
+      ep: result 
+    },
+    revalidate: 7000
   }
 }
 

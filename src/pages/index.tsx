@@ -110,7 +110,8 @@ export async function getStaticProps() {
   return {
     props: {
       characters: json
-    }
+    },
+    revalidate: 7000
   }
 }
 
